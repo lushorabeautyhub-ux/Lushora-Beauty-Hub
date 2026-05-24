@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel – Lushora Beauty Hub</title>
+  <meta name="description" content="Admin panel for Lushora Beauty Hub product management.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<!-- ── LOGIN PAGE ── -->
+<div class="admin-login-page" id="login-page">
+  <div class="login-box">
+    <img src="images/logo.png" alt="Lushora Beauty Hub" class="login-logo">
+    <h1 class="login-title">Admin Login</h1>
+    <p class="login-subtitle">Lushora Beauty Hub Management Portal</p>
+    <form class="login-form" id="login-form" novalidate aria-label="Admin login form">
+      <div class="form-group">
+        <label for="admin-username">Username</label>
+        <input type="text" id="admin-username" name="username" placeholder="Enter username" autocomplete="username" required>
+      </div>
+      <div class="form-group">
+        <label for="admin-password">Password</label>
+        <input type="password" id="admin-password" name="password" placeholder="Enter password" autocomplete="current-password" required>
+      </div>
+      <div class="login-error" id="login-error" role="alert"></div>
+      <button type="submit" class="login-btn" id="login-submit-btn">🔐 Login to Dashboard</button>
+    </form>
+    <a href="index.html" class="back-link" id="back-to-site">← Back to Website</a>
+
+    <div style="margin-top:28px;padding:16px;background:rgba(201,149,108,0.08);border:1px solid rgba(201,149,108,0.2);border-radius:10px;text-align:left;">
+      <p style="color:var(--text-muted);font-size:0.72px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;font-size:0.72rem;">Default Credentials</p>
+      <p style="color:var(--rose-gold);font-size:0.82rem;">Username: <strong>lushora_admin</strong></p>
+      <p style="color:var(--rose-gold);font-size:0.82rem;">Password: <strong>Lushora@2024</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADMIN DASHBOARD ── -->
+<div class="admin-page" id="admin-page">
+
+  <!-- Header -->
+  <header class="admin-header" role="banner">
+    <div class="admin-header-inner">
+      <div class="admin-brand">
+        <img src="images/logo.png" alt="Lushora">
+        <div>
+          <div class="admin-brand-text">Lushora Beauty Hub</div>
+          <div class="admin-brand-sub">Admin Dashboard</div>
+        </div>
+      </div>
+      <div class="admin-actions">
+        <a href="index.html" class="admin-view-site" id="view-site-btn" target="_blank">🌐 View Website</a>
+        <button class="admin-logout" id="logout-btn">🚪 Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main" role="main">
+    <!-- Stats -->
+    <div class="admin-stats" aria-label="Dashboard statistics">
+      <div class="stat-card">
+        <div class="stat-icon">📦</div>
+        <div>
+          <div class="stat-num" id="stat-total">0</div>
+          <div class="stat-label">Total Products</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💇</div>
+        <div>
+          <div class="stat-num" id="stat-hair">0</div>
+          <div class="stat-label">Hair Care</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">✨</div>
+        <div>
+          <div class="stat-num" id="stat-skin">0</div>
+          <div class="stat-label">Skin & Supplements</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🦵</div>
+        <div>
+          <div class="stat-num" id="stat-wellness">0</div>
+          <div class="stat-label">Wellness</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="admin-tabs" role="tablist" aria-label="Admin sections">
+      <button class="admin-tab active" data-tab="tab-products" id="tab-btn-products" role="tab" aria-selected="true">📦 Product List</button>
+      <button class="admin-tab" data-tab="tab-add" id="tab-btn-add" role="tab" aria-selected="false">➕ Add Product</button>
+      <button class="admin-tab" data-tab="tab-settings" id="tab-btn-settings" role="tab" aria-selected="false">⚙️ Info</button>
+    </div>
+
+    <!-- Tab: Products List -->
+    <div class="tab-content active" id="tab-products" role="tabpanel" aria-labelledby="tab-btn-products">
+      <div class="panel-header">
+        <h2 class="panel-title">All Products</h2>
+        <button class="btn-add" id="btn-go-add"
+          onclick="document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));document.querySelector('[data-tab=tab-add]').classList.add('active');document.getElementById('tab-add').classList.add('active');">
+          ➕ Add New Product
+        </button>
+      </div>
+      <div class="products-table-wrap">
+        <table class="products-table" aria-label="Products table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Featured</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="products-tbody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab: Add/Edit Product -->
+    <div class="tab-content" id="tab-add" role="tabpanel" aria-labelledby="tab-btn-add">
+      <div class="product-form-wrap">
+        <h2 class="product-form-title" id="form-title">➕ Add New Product</h2>
+        <form class="admin-form" id="product-form" novalidate aria-label="Product management form">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="p-name">Product Name *</label>
+              <input type="text" id="p-name" name="name" placeholder="e.g. SATINY Hair Solution" required>
+            </div>
+            <div class="form-group">
+              <label for="p-brand">Brand / By</label>
+              <input type="text" id="p-brand" name="brand" placeholder="e.g. By Fadna">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="p-category">Category *</label>
+              <select id="p-category" name="category" required>
+                <option value="">Select category...</option>
+                <option value="hair">💇 Hair Care</option>
+                <option value="skin">✨ Skin Care</option>
+                <option value="wellness">🦵 Wellness</option>
+                <option value="supplements">💊 Supplements</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="p-badge">Badge Text</label>
+              <input type="text" id="p-badge" name="badge" placeholder="e.g. Best Seller">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="p-badge-class">Badge Style</label>
+              <select id="p-badge-class" name="badgeClass">
+                <option value="badge-sale">🔴 Red (Sale/Hot)</option>
+                <option value="badge-new">🔵 Blue (New/Clinically)</option>
+                <option value="badge-natural">🟢 Green (Natural)</option>
+              </select>
+            </div>
+            <div class="form-group" style="display:flex;align-items:center;gap:12px;padding-top:28px;">
+              <input type="checkbox" id="p-featured" name="featured" style="width:18px;height:18px;accent-color:var(--rose-gold);">
+              <label for="p-featured" style="text-transform:none;letter-spacing:0;font-size:0.85rem;color:var(--text-light);margin:0;">★ Mark as Featured Product</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="p-tagline">Short Tagline</label>
+            <input type="text" id="p-tagline" name="tagline" placeholder="e.g. Targets root cause of hair fall naturally">
+          </div>
+
+          <div class="form-group">
+            <label for="p-description">Full Description</label>
+            <textarea id="p-description" name="description" rows="3" placeholder="Detailed product description..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="p-market-price">Market Price (Rs.) *</label>
+              <input type="number" id="p-market-price" name="marketPrice" placeholder="e.g. 3900" min="0" required>
+            </div>
+            <div class="form-group">
+              <label for="p-our-price">Our Price (Rs.) *</label>
+              <input type="number" id="p-our-price" name="ourPrice" placeholder="e.g. 3700" min="0" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="p-benefits">Product Benefits (one per line)</label>
+            <textarea id="p-benefits" name="benefits" rows="5" placeholder="Reduces Hair Fall&#10;Promotes Hair Growth&#10;Fights Dandruff&#10;Controls Frizz"></textarea>
+            <p class="benefits-input-note">💡 Enter each benefit on a new line</p>
+          </div>
+
+          <div class="form-group">
+            <label for="p-ingredients">Key Ingredients</label>
+            <input type="text" id="p-ingredients" name="ingredients" placeholder="e.g. Aloe Vera, Coconut Oil, Vitamin E">
+          </div>
+
+          <div class="form-group">
+            <label for="p-usage">How to Use</label>
+            <textarea id="p-usage" name="usage" rows="2" placeholder="Usage instructions..."></textarea>
+          </div>
+
+          <!-- Image section -->
+          <div style="padding:20px;background:rgba(201,149,108,0.05);border:1px dashed rgba(201,149,108,0.3);border-radius:12px;margin-bottom:18px;">
+            <p style="color:var(--rose-gold);font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">Product Image</p>
+
+            <div class="form-group" style="margin-bottom:12px;">
+              <label for="p-image-file">Upload Image File</label>
+              <input type="file" id="p-image-file" accept="image/*"
+                     style="color:var(--text-muted);font-size:0.85rem;">
+              <p style="color:var(--text-muted);font-size:0.72rem;margin-top:6px;">
+                ⚠️ For GitHub Pages hosting: After uploading via file picker, also place the image in your <code style="color:var(--rose-gold);">images/</code> folder and enter its path below.
+              </p>
+            </div>
+
+            <div class="form-group" style="margin:0;">
+              <label for="p-image-url">Image Path / URL</label>
+              <input type="text" id="p-image-url" name="image" placeholder="images/my-product.jpg or https://...">
+            </div>
+
+            <div class="img-preview-wrap">
+              <img class="img-preview" id="img-preview" alt="Product preview">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-save" id="btn-save-product">💾 Save Product</button>
+            <button type="button" class="btn-cancel" id="btn-cancel-form">✕ Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Tab: Info & Settings -->
+    <div class="tab-content" id="tab-settings" role="tabpanel" aria-labelledby="tab-btn-settings">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;">
+
+        <!-- Login Info -->
+        <div style="background:var(--dark-card);border:1px solid rgba(201,149,108,0.15);border-radius:16px;padding:28px;">
+          <h3 style="font-family:var(--font-serif);color:var(--text-light);margin-bottom:16px;">🔐 Admin Credentials</h3>
+          <div style="background:rgba(201,149,108,0.08);border:1px solid rgba(201,149,108,0.2);border-radius:10px;padding:16px;margin-bottom:14px;">
+            <p style="color:var(--text-muted);font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Current Login</p>
+            <p style="color:var(--rose-gold);">Username: <strong>lushora_admin</strong></p>
+            <p style="color:var(--rose-gold);margin-top:4px;">Password: <strong>Lushora@2024</strong></p>
+          </div>
+          <p style="color:var(--text-muted);font-size:0.8rem;line-height:1.7;">
+            ⚠️ To change credentials, edit the <code style="color:var(--rose-gold);">ADMIN_USER</code> and <code style="color:var(--rose-gold);">ADMIN_PASS</code> constants in <strong>js/admin.js</strong>.
+          </p>
+        </div>
+
+        <!-- Product Storage Info -->
+        <div style="background:var(--dark-card);border:1px solid rgba(201,149,108,0.15);border-radius:16px;padding:28px;">
+          <h3 style="font-family:var(--font-serif);color:var(--text-light);margin-bottom:16px;">💾 Data Storage</h3>
+          <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.8;margin-bottom:12px;">
+            Products are stored in your browser's <strong>localStorage</strong>. This means:
+          </p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+            <li style="color:var(--text-muted);font-size:0.82rem;display:flex;gap:8px;"><span style="color:var(--rose-gold);">✓</span>No backend server needed</li>
+            <li style="color:var(--text-muted);font-size:0.82rem;display:flex;gap:8px;"><span style="color:var(--rose-gold);">✓</span>Works on GitHub Pages</li>
+            <li style="color:var(--text-muted);font-size:0.82rem;display:flex;gap:8px;"><span style="color:#e07070);">⚠</span> Data persists in this browser only</li>
+            <li style="color:var(--text-muted);font-size:0.82rem;display:flex;gap:8px;"><span style="color:#e07070;">⚠</span> Clear browser data = data loss</li>
+          </ul>
+          <button onclick="resetToDefaults()" style="margin-top:16px;padding:8px 18px;background:rgba(139,26,26,0.2);border:1px solid rgba(139,26,26,0.4);color:#e07070;border-radius:8px;cursor:pointer;font-size:0.8rem;font-family:var(--font-sans);">
+            🔄 Reset to Default Products
+          </button>
+        </div>
+
+        <!-- GitHub Hosting Guide -->
+        <div style="background:var(--dark-card);border:1px solid rgba(201,149,108,0.15);border-radius:16px;padding:28px;grid-column:1/-1;">
+          <h3 style="font-family:var(--font-serif);color:var(--text-light);margin-bottom:16px;">🌐 GitHub Pages Hosting Guide</h3>
+          <ol style="display:flex;flex-direction:column;gap:12px;padding-left:20px;">
+            <li style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;">Create a new repository on GitHub (e.g. <code style="color:var(--rose-gold);">lushorabeautyhub</code>)</li>
+            <li style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;">Upload ALL files from this folder: <code style="color:var(--rose-gold);">index.html</code>, <code style="color:var(--rose-gold);">admin.html</code>, <code style="color:var(--rose-gold);">css/</code>, <code style="color:var(--rose-gold);">js/</code>, <code style="color:var(--rose-gold);">images/</code></li>
+            <li style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;">Go to repository Settings → Pages → Source: Deploy from branch → main</li>
+            <li style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;">Your site will be live at: <code style="color:var(--rose-gold);">https://[username].github.io/[repo-name]/</code></li>
+            <li style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;">Admin panel will be at: <code style="color:var(--rose-gold);">https://[username].github.io/[repo-name]/admin.html</code></li>
+          </ol>
+          <div style="margin-top:18px;padding:14px;background:rgba(45,122,79,0.12);border:1px solid rgba(45,122,79,0.3);border-radius:10px;">
+            <p style="color:#7de0a0;font-size:0.82rem;">✅ This website is fully compatible with GitHub Pages free hosting. No server or backend required!</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── SCRIPTS ── -->
+<script>
+  // Reset to defaults helper
+  function resetToDefaults() {
+    if (confirm('Are you sure? This will reset all products to the default list and remove any added products.')) {
+      localStorage.removeItem('lushora_products');
+      location.reload();
+    }
+  }
+</script>
+<script src="js/admin.js"></script>
+</body>
+</html>
